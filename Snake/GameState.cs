@@ -164,7 +164,7 @@ namespace Snake
             else if (hit == GridValue.Food)
             {
                 AddHead(newHeadPos);
-                Score++;
+                Score += 100;
                 AddFood();
             }
         }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -33,6 +34,11 @@ namespace Snake
             {Direction.Right, 90},
             {Direction.Down, 180},
             {Direction.Left, 270},
+
+            {Direction.UpRight, 45},
+            {Direction.DownRight, 135},
+            {Direction.DownLeft, 225},
+            {Direction.UpLeft, 315},
         };
 
         private readonly int rows = 15;
@@ -40,6 +46,7 @@ namespace Snake
         private readonly Image[,] gridImages;
         private GameState gameState;
         private bool gameRunning;
+        private int highScore = 0;
 
         public MainWindow()
         {
@@ -47,6 +54,20 @@ namespace Snake
 
             gridImages = SetupGrid();
             gameState = new GameState(rows, cols);
+            string fileName = System.IO.Path.Combine(Directory.GetCurrentDirectory(), "highscore.txt");
+            if (File.Exists(fileName))
+            {
+                StreamReader sr = new StreamReader(fileName);
+                highScore = int.Parse(sr.ReadLine());
+                sr.Close();
+                HighScoreText.Text = $"High Score: {highScore}";
+            }
+            else
+            {
+                StreamWriter sw = new StreamWriter(fileName);
+                sw.WriteLine(highScore);
+                sw.Close();
+            }
         }
         private async Task RunGame()
         {
@@ -92,6 +113,31 @@ namespace Snake
                     break;
                 case Key.Down:
                     gameState.ChangeDirection(Direction.Down);
+                    break;
+
+                case Key.A:
+                    gameState.ChangeDirection(Direction.Left);
+                    break;
+                case Key.D:
+                    gameState.ChangeDirection(Direction.Right);
+                    break;
+                case Key.W:
+                    gameState.ChangeDirection(Direction.Up);
+                    break;
+                case Key.S:
+                    gameState.ChangeDirection(Direction.Down);
+                    break;
+                case Key.E:
+                    gameState.ChangeDirection(Direction.UpRight);
+                    break;
+                case Key.C:
+                    gameState.ChangeDirection(Direction.DownRight);
+                    break;
+                case Key.Z:
+                    gameState.ChangeDirection(Direction.DownLeft);
+                    break;
+                case Key.Q:
+                    gameState.ChangeDirection(Direction.UpLeft);
                     break;
             }
         }
@@ -193,9 +239,19 @@ namespace Snake
 
         private async Task ShowGameOver()
         {
+            if (gameState.Score > highScore)
+            {
+                highScore = gameState.Score;
+                StreamWriter sw = new StreamWriter(Directory.GetCurrentDirectory() + "\\highscore.txt");
+                sw.WriteLine(highScore);
+                sw.Close();
+            }
+
+            HighScoreText.Text = $"High Score: {highScore}";
+
             await DrawDeadSnake();
             await Task.Delay(1000);
-            OverlayText.Text = "Press Any Key To Start";
+            OverlayText.Text = "IP Address Obtained";
             Overlay.Visibility = Visibility.Visible;
         }
     }
