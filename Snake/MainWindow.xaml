@@ -15,27 +15,27 @@
         PreviewKeyDown="Window_PreviewKeyDown"
         KeyDown="Window_KeyDown">
     <Viewbox>
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="auto"/>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="auto"/>
             </Grid.RowDefinitions>
 
-        <TextBlock x:Name="ScoreText"
-                   HorizontalAlignment="Center"
+            <TextBlock x:Name="TimeText"
+                   HorizontalAlignment="Left"
                    VerticalAlignment="Center"
                    Text="Score 100"
                    FontSize="22"
-                   Margin="10"/>
-        
+                   Margin="64,0,0,0"/>
+
             <TextBlock x:Name="HighScoreText"
                    HorizontalAlignment="Center"
                    VerticalAlignment="Center"
                    Text="High Score 0"
                    FontSize="22"
                    Margin="10"
-                       Grid.Row="2"/>
+                   Grid.Row="2"/>
 
             <Border x:Name="GridBorder"
                 Grid.Row="1"
@@ -45,15 +45,15 @@
                 VerticalAlignment="Center"
                 RenderOptions.EdgeMode="Aliased"
                 Margin="20,0,20,20">
-            <UniformGrid x:Name="GameGrid"
+                <UniformGrid x:Name="GameGrid"
                              Width="400"
                              Height="400"
                              Background="{StaticResource GridBackgroundColor}"
                          SnapsToDevicePixels="True"
                          RenderOptions.BitmapScalingMode="HighQuality">
-                
-            </UniformGrid>
-        </Border>
+
+                </UniformGrid>
+            </Border>
 
             <Border x:Name="Overlay"
                 Grid.Row="1"
@@ -70,6 +70,12 @@
                            TextWrapping="Wrap"
                            />
             </Border>
+            <TextBlock x:Name="ScoreText"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Center"
+                Text="Score 100"
+                FontSize="22" Margin="281,0,0,0"
+    />
         </Grid>
     </Viewbox>
 </Window>

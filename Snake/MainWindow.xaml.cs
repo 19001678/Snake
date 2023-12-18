@@ -47,13 +47,17 @@ namespace Snake
         private GameState gameState;
         private bool gameRunning;
         private int highScore = 0;
+        private GameTimer gameTimer;
 
         public MainWindow()
         {
             InitializeComponent();
 
+            gameTimer = new GameTimer(15);
+            gameTimer.Start();
+
             gridImages = SetupGrid();
-            gameState = new GameState(rows, cols);
+            gameState = new GameState(rows, cols, gameTimer);
             string fileName = System.IO.Path.Combine(Directory.GetCurrentDirectory(), "highscore.txt");
             if (File.Exists(fileName))
             {
@@ -69,6 +73,7 @@ namespace Snake
                 sw.Close();
             }
         }
+
         private async Task RunGame()
         {
             Draw();
@@ -76,7 +81,7 @@ namespace Snake
             Overlay.Visibility = Visibility.Hidden;
             await GameLoop();
             await ShowGameOver();
-            gameState = new GameState(rows,cols);
+            gameState = new GameState(rows,cols,gameTimer);
         }
         
         private async void Window_PreviewKeyDown(object sender, KeyEventArgs e)
@@ -146,6 +151,11 @@ namespace Snake
         {
             while (!gameState.GameOver)
             {
+                if (gameTimer.TimeInSeconds <= 0)
+                {
+                    gameState.GameOver = true;
+                } 
+                
                 await Task.Delay(100);
                 gameState.Move();
                 Draw();
@@ -187,7 +197,8 @@ namespace Snake
         {
             DrawGrid();
             DrawSnakeHead();
-            ScoreText.Text = $"SCORE {gameState.Score}";
+            TimeText.Text = $"TIME {gameTimer.TimeInSeconds}";
+            //ScoreText.Text = $"SCORE {gameTimer.Score}";
         }
 
 
@@ -239,6 +250,7 @@ namespace Snake
 
         private async Task ShowGameOver()
         {
+            Audio.GameOver.Play();
             if (gameState.Score > highScore)
             {
                 highScore = gameState.Score;
@@ -251,7 +263,7 @@ namespace Snake
 
             await DrawDeadSnake();
             await Task.Delay(1000);
-            OverlayText.Text = "IP Address Obtained";
+            OverlayText.Text = "All wars are civil wars, because all men are brothers. - Francois Fenelon";
             Overlay.Visibility = Visibility.Visible;
         }
     }

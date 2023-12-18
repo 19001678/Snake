@@ -16,6 +16,13 @@
     <None Remove="Assets\Food.png" />
     <None Remove="Assets\Head.png" />
     <None Remove="Assets\icon.ico" />
+    <None Remove="Assets\windows_error.mp3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Assets\windows_error.mp3">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
   <ItemGroup>
