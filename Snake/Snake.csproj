@@ -16,10 +16,18 @@
     <None Remove="Assets\Food.png" />
     <None Remove="Assets\Head.png" />
     <None Remove="Assets\icon.ico" />
+    <None Remove="Assets\Tranzit.mp3" />
+    <None Remove="Assets\Wall.jpg" />
     <None Remove="Assets\windows_error.mp3" />
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Assets\Wall.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Content Include="Assets\Tranzit.mp3">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Assets\windows_error.mp3">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

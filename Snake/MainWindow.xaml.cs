@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 
 namespace Snake
 {
@@ -26,6 +27,7 @@ namespace Snake
             { GridValue.Empty, Images.Empty },
             { GridValue.Snake, Images.Body },
             { GridValue.Food, Images.Food },
+            { GridValue.Wall, Images.Wall },
         };
 
         private readonly Dictionary<Direction, int> dirToRotation = new()
@@ -48,13 +50,14 @@ namespace Snake
         private bool gameRunning;
         private int highScore = 0;
         private GameTimer gameTimer;
+        private Random random = new Random();
+        private int boostSpeed = 0;
 
         public MainWindow()
         {
             InitializeComponent();
 
-            gameTimer = new GameTimer(15);
-            gameTimer.Start();
+            gameTimer = new GameTimer(10);
 
             gridImages = SetupGrid();
             gameState = new GameState(rows, cols, gameTimer);
@@ -144,11 +147,16 @@ namespace Snake
                 case Key.Q:
                     gameState.ChangeDirection(Direction.UpLeft);
                     break;
+
+                case Key.Space:
+                    boostSpeed = (boostSpeed == 0) ? GameSettings.BoostSpeed : 0;
+                    break;
             }
         }
 
         private async Task GameLoop()
         {
+            gameTimer.Start();
             while (!gameState.GameOver)
             {
                 if (gameTimer.TimeInSeconds <= 0)
@@ -156,7 +164,7 @@ namespace Snake
                     gameState.GameOver = true;
                 } 
                 
-                await Task.Delay(100);
+                await Task.Delay(100-boostSpeed);
                 gameState.Move();
                 Draw();
             }
@@ -198,7 +206,7 @@ namespace Snake
             DrawGrid();
             DrawSnakeHead();
             TimeText.Text = $"TIME {gameTimer.TimeInSeconds}";
-            //ScoreText.Text = $"SCORE {gameTimer.Score}";
+            ScoreText.Text = $"SCORE {gameState.Score}";
         }
 
 
@@ -236,6 +244,7 @@ namespace Snake
                 ImageSource source = (i == 0) ? Images.DeadHead : Images.DeadBody;
                 gridImages[pos.Row, pos.Col].Source = source;
                 await Task.Delay(50);
+                await Task.Delay(Math.Max(50 - (i*3),1));
             }
         }
 
@@ -250,6 +259,7 @@ namespace Snake
 
         private async Task ShowGameOver()
         {
+            //ShakeWindow(2000);
             Audio.GameOver.Play();
             if (gameState.Score > highScore)
             {
@@ -263,8 +273,27 @@ namespace Snake
 
             await DrawDeadSnake();
             await Task.Delay(1000);
-            OverlayText.Text = "All wars are civil wars, because all men are brothers. - Francois Fenelon";
+            OverlayText.Text = "IP Address Obtained";
             Overlay.Visibility = Visibility.Visible;
+        }
+
+        private async Task ShakeWindow(int durationMs)
+        {
+            var oLeft = this.Left;
+            var oTop = this.Top;
+
+            var shakeTimer = new DispatcherTimer(DispatcherPriority.Send);
+            shakeTimer.Tick += (sender, args) =>
+            {
+                this.Left = oLeft + random.Next(-10, 11);
+                this.Top = oTop + random.Next(-10, 11);
+            };
+
+            shakeTimer.Interval = TimeSpan.FromMilliseconds(200);
+            shakeTimer.Start();
+
+            await Task.Delay(durationMs);
+            shakeTimer.Stop();
         }
     }
 }

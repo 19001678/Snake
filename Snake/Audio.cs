@@ -5,7 +5,7 @@ namespace Snake
 {
     public static class Audio
     {
-        public readonly static MediaPlayer GameOver = LoadAudio("windows_error.mp3");
+        public readonly static MediaPlayer GameOver = LoadAudio("Fortunate Son.mp3");
 
         private static MediaPlayer LoadAudio(string filename, double volume = 1, bool repeat = false, bool autoReset = true)
         {

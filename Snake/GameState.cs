@@ -23,9 +23,11 @@ namespace Snake
             Cols = cols;
             Grid = new GridValue[rows, cols];
             Dir = Direction.Right;
+            gameTimer.TimeInSeconds = 10;
 
             AddSnake();
             AddFood();
+            AddWall();
             this.gameTimer = gameTimer;
         }
 
@@ -65,6 +67,25 @@ namespace Snake
 
             Position pos = empty[random.Next(empty.Count)];
             Grid[pos.Row, pos.Col] = GridValue.Food;
+        }
+
+        private void AddWall()
+        {
+            List<Position> empty = new List<Position>(EmptyPositions());
+
+            int numberOfWalls = (int)(Rows * Cols * GameSettings.WallDensity);
+
+            for (int c = 0; c < numberOfWalls; c++)
+            {
+                if (empty.Count == 0)
+                    return;
+
+                int posNumber = random.Next(0, empty.Count);
+
+                Position pos = empty[posNumber];
+                Grid[pos.Row, pos.Col] = GridValue.Wall;
+                empty.RemoveAt(posNumber);
+            }
         }
 
         public Position HeadPosition()
@@ -154,7 +175,7 @@ namespace Snake
             Position newHeadPos = HeadPosition().Translate(Dir);
             GridValue hit = WillHit(newHeadPos);
 
-            if (hit == GridValue.Outside || hit == GridValue.Snake)
+            if (hit == GridValue.Outside || hit == GridValue.Snake || (hit == GridValue.Wall && GameSettings.WallFatality))
             {
                 GameOver = true;
             }
@@ -166,10 +187,14 @@ namespace Snake
             else if (hit == GridValue.Food)
             {
                 AddHead(newHeadPos);
-                gameTimer.AddSeconds(3);
+                gameTimer.AddSeconds(1);
                 Score += 100;
                 AddFood();
             }
+            /*else if (hit == GridValue.Wall)
+            {
+
+            }*/
         }
 
     }

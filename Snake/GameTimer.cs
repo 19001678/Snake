@@ -4,7 +4,7 @@ using System.Windows.Threading;
 public class GameTimer
 {
     private readonly DispatcherTimer dispatcherTimer;
-    public int TimeInSeconds { get; private set; }
+    public int TimeInSeconds { get; set; }
 
     public event EventHandler TimerElapsed;
 

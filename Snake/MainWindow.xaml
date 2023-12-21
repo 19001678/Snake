@@ -24,10 +24,9 @@
 
             <TextBlock x:Name="TimeText"
                    HorizontalAlignment="Left"
-                   VerticalAlignment="Center"
-                   Text="Score 100"
+                   VerticalAlignment="Bottom"
                    FontSize="22"
-                   Margin="64,0,0,0"/>
+                   Margin="64,0,0,423" Grid.RowSpan="2"><Run Text="Time 10"/><LineBreak/><Run/><LineBreak/><Run/></TextBlock>
 
             <TextBlock x:Name="HighScoreText"
                    HorizontalAlignment="Center"
@@ -73,7 +72,7 @@
             <TextBlock x:Name="ScoreText"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Center"
-                Text="Score 100"
+                Text="Score 0"
                 FontSize="22" Margin="281,0,0,0"
     />
         </Grid>
