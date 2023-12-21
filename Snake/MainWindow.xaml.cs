@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -57,7 +58,7 @@ namespace Snake
         {
             InitializeComponent();
 
-            gameTimer = new GameTimer(10);
+            gameTimer = new GameTimer(10000);
 
             gridImages = SetupGrid();
             gameState = new GameState(rows, cols, gameTimer);
@@ -151,6 +152,9 @@ namespace Snake
                 case Key.Space:
                     boostSpeed = (boostSpeed == 0) ? GameSettings.BoostSpeed : 0;
                     break;
+                case Key.T:
+                    GameSettings.TimeFormat = !GameSettings.TimeFormat;
+                    break;
             }
         }
 
@@ -159,7 +163,7 @@ namespace Snake
             gameTimer.Start();
             while (!gameState.GameOver)
             {
-                if (gameTimer.TimeInSeconds <= 0)
+                if (gameTimer.TimeInMilliseconds <= 0)
                 {
                     gameState.GameOver = true;
                 } 
@@ -205,7 +209,8 @@ namespace Snake
         {
             DrawGrid();
             DrawSnakeHead();
-            TimeText.Text = $"TIME {gameTimer.TimeInSeconds}";
+            string dTime = (GameSettings.TimeFormat) ? gameTimer.TimeInMilliseconds.ToString() : (gameTimer.TimeInMilliseconds / 1000).ToString();
+            TimeText.Text = $"TIME {dTime}";
             ScoreText.Text = $"SCORE {gameState.Score}";
         }
 
@@ -259,7 +264,7 @@ namespace Snake
 
         private async Task ShowGameOver()
         {
-            //ShakeWindow(2000);
+            ShakeWindow(2000);
             Audio.GameOver.Play();
             if (gameState.Score > highScore)
             {

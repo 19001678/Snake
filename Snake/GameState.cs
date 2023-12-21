@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace Snake
 {
@@ -23,7 +24,7 @@ namespace Snake
             Cols = cols;
             Grid = new GridValue[rows, cols];
             Dir = Direction.Right;
-            gameTimer.TimeInSeconds = 10;
+            gameTimer.TimeInMilliseconds = 10000;
 
             AddSnake();
             AddFood();
@@ -187,7 +188,7 @@ namespace Snake
             else if (hit == GridValue.Food)
             {
                 AddHead(newHeadPos);
-                gameTimer.AddSeconds(1);
+                gameTimer.AddMilliseconds(1500);
                 Score += 100;
                 AddFood();
             }

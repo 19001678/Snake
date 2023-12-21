@@ -4,28 +4,28 @@ using System.Windows.Threading;
 public class GameTimer
 {
     private readonly DispatcherTimer dispatcherTimer;
-    public int TimeInSeconds { get; set; }
+    public int TimeInMilliseconds { get; set; }
 
     public event EventHandler TimerElapsed;
 
-    public GameTimer(int initialTimeInSeconds)
+    public GameTimer(int initialTimeInMilliseconds)
     {
-        TimeInSeconds = initialTimeInSeconds;
+        TimeInMilliseconds = initialTimeInMilliseconds;
 
         dispatcherTimer = new DispatcherTimer();
-        dispatcherTimer.Interval = TimeSpan.FromSeconds(1);
+        dispatcherTimer.Interval = TimeSpan.FromMilliseconds(100);
         dispatcherTimer.Tick += DispatcherTimer_Tick;
     }
 
     private void DispatcherTimer_Tick(object sender, EventArgs e)
     {
-        TimeInSeconds--;
+        TimeInMilliseconds-=100;
 
-        if (TimeInSeconds <= 0)
+        if (TimeInMilliseconds <= 0)
         {
-            TimeInSeconds = 0;
+            TimeInMilliseconds = 0;
             dispatcherTimer.Stop();
-            TimerElapsed?.Invoke(this, EventArgs.Empty);
+            //TimerElapsed?.Invoke(this, EventArgs.Empty);
             
         }
     }
@@ -40,13 +40,13 @@ public class GameTimer
         dispatcherTimer.Stop();
     }
 
-    public void AddSeconds(int seconds)
+    public void AddMilliseconds(int milliseconds)
     {
-        TimeInSeconds += seconds;
+            TimeInMilliseconds += milliseconds;
     }
 
-    public int GetTimeInSeconds()
+    public int GetTimeInMilliseconds()
     {
-        return TimeInSeconds;
+        return TimeInMilliseconds;
     }
 }

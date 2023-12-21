@@ -11,5 +11,7 @@ namespace Snake
         public static int BoostSpeed { get; set; } = 50;
         public static double WallDensity { get; set; } = .01;
         public static bool WallFatality { get; set; } = true;
+
+        public static bool TimeFormat { get; set; } = true;
     }
 }
