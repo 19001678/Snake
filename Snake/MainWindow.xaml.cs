@@ -264,7 +264,7 @@ namespace Snake
 
         private async Task ShowGameOver()
         {
-            ShakeWindow(2000);
+            //ShakeWindow(2000);
             Audio.GameOver.Play();
             if (gameState.Score > highScore)
             {

@@ -21,6 +21,7 @@
     <None Remove="Assets\Tranzit.mp3" />
     <None Remove="Assets\Vietnam Music.mp3" />
     <None Remove="Assets\Wall.jpg" />
+    <None Remove="Assets\Wall.png" />
     <None Remove="Assets\windows_error.mp3" />
   </ItemGroup>
 
@@ -40,6 +41,9 @@
     <Content Include="Assets\Vietnam Music.mp3">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Resource Include="Assets\Wall.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
     <Content Include="Assets\windows_error.mp3">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
