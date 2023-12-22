@@ -81,7 +81,9 @@ namespace Snake
         private async Task RunGame()
         {
             Draw();
+            //Audio.Start.Play();
             await ShowCountDown();
+            //Audio.Background.Play();
             Overlay.Visibility = Visibility.Hidden;
             await GameLoop();
             await ShowGameOver();
